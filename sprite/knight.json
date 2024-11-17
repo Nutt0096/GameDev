@@ -1,0 +1,14 @@
+{
+    "spriteSheetURL": "./graphics/knight.png",
+    "type":"animation",
+    "size":[16,20],
+    "sprites":[
+        {
+            "name":"knight_idle",
+            "x":0,
+            "y":0,
+            "scalefactor":3,
+            "colorKey":-1
+        }]       
+
+}

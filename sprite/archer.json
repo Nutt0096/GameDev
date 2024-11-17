@@ -1,0 +1,14 @@
+{
+    "spriteSheetURL": "./graphics/archer.png",
+    "type":"animation",
+    "size":[16,20],
+    "sprites":[
+        {
+            "name":"archer_idle",
+            "x":0,
+            "y":0,
+            "scalefactor":3,
+            "colorKey":-1
+        }]       
+
+}
