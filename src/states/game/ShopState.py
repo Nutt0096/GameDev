@@ -78,6 +78,8 @@ class ShopState(BaseState):
                             # change to next stage when combined with other state
                             # pygame.quit()
                             # sys.exit()
+                            self.confirm_window = False
+                            self.confirm_window_type = -1
                             g_state_manager.Change('stage', {
                                 'level': self.current_stage,
                                 'team': self.team_characters,
