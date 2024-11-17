@@ -12,7 +12,7 @@
             "description": "It's nearly extinct and you still eat it",
             "cost": 10,
             "rarity": "common",
-            "on use": "1 in 12 chance to unlock Legendary banana"
+            "on use": "1 in 12 chance to unlock Legendary banana (It not doing anything now)"
         },
         {
             "name": "Healing Potion",
@@ -30,7 +30,7 @@
         },
         {
             "name": "Chocolate Cornet",
-            "description": "My hearts is Chocolate Cornet",
+            "description": "My hearts is Chocolate Cornet. Increase ACC by 1 for the next 2 rounds",
             "cost": 20,
             "rarity": "common",
             "on use": "Increase ACC by 1 for the next 2 rounds"
@@ -65,7 +65,7 @@
         },
         {
             "name": "A Broken Toaster",
-            "description": "Have you tried turning it off and on?",
+            "description": "Have you tried turning it off and on?, Deal 1d12 damage to a random enemy",
             "cost": 10,
             "rarity": "common",
             "on use": "Deal 1d12 damage to a random enemy"
