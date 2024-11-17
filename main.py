@@ -22,7 +22,8 @@ class GameMain:
             'stage': StageState(),
             'combat': CombatState(), # add combat stage
             'shop': ShopState(),
-            'victory': VictoryState()
+            'victory': VictoryState(),
+            'defeat': DefeatState()
         }
 
         g_state_manager.SetStates(states)

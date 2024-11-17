@@ -142,7 +142,7 @@
             "rarity": "common",
             "special": "",
             "unlock": true,
-            "user": "wizard",
+            "user": "mage",
             "dice": "1d4",
             "modify stats": {
                 "STR": -1,
@@ -380,7 +380,7 @@
             "rarity": "rare",
             "special": "",
             "unlock": true,
-            "user": "wizard",
+            "user": "mage",
             "dice": "1d12",
             "modify stats": {
                 "STR": -1,
@@ -467,7 +467,7 @@
             "rarity": "common",
             "special": "",
             "unlock": true,
-            "user": "wizard",
+            "user": "mage",
             "mana": 5,
             "dice": "2d4",
             "modify stats": {
@@ -482,7 +482,7 @@
             "rarity": "common",
             "special": "",
             "unlock": true,
-            "user": "wizard",
+            "user": "mage",
             "mana": 5,
             "dice": "2d4",
             "modify stats": {
@@ -497,7 +497,7 @@
             "rarity": "common",
             "special": "",
             "unlock": true,
-            "user": "wizard",
+            "user": "mage",
             "mana": 5,
             "dice": "2d4",
             "modify stats": {
@@ -572,7 +572,7 @@
             "rarity": "rare",
             "special": "",
             "unlock": true,
-            "user": "wizard",
+            "user": "mage",
             "mana": 10,
             "dice": "3d6",
             "modify stats": {
@@ -602,7 +602,7 @@
             "rarity": "rare",
             "special": "",
             "unlock": true,
-            "user": "wizard",
+            "user": "mage",
             "mana": 10,
             "dice": "3d8",
             "modify stats": {
@@ -617,7 +617,7 @@
             "rarity": "rare",
             "special": "Recover HP by damage done",
             "unlock": true,
-            "user": "wizard",
+            "user": "mage",
             "mana": 10,
             "dice": "2d6",
             "modify stats": {
@@ -647,7 +647,7 @@
             "rarity": "legendary",
             "special": "",
             "unlock": false,
-            "user": "wizard",
+            "user": "mage",
             "mana": 20,
             "dice": "3d12",
             "modify stats": {
@@ -749,7 +749,7 @@
             "rarity": "common",
             "special": "",
             "unlock": true,
-            "user": "wizard",
+            "user": "mage",
             "modify stats": {
                 "CON": 0,
                 "DEF": 0,
@@ -777,7 +777,7 @@
             "rarity": "rare",
             "special": "",
             "unlock": true,
-            "user": "wizard",
+            "user": "mage",
             "modify stats": {
                 "CON": 1,
                 "DEF": -1,

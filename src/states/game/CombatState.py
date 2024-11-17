@@ -276,6 +276,7 @@ class CombatState(BaseState):
                 })
         elif not self.characters:  # If no characters remain, transition to game over
             print("All characters defeated! Game over.")
+            g_state_manager.Change('defeat', None)
 
     def process_player_action(self, action):
         """Process player inputs."""

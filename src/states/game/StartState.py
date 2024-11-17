@@ -17,6 +17,7 @@ class StartState(BaseState):
         print(self.bg_image)
 
         gSounds['victory'].stop()
+        gSounds['defeat'].stop()
         gSounds['Title_music'].play(-1)
         
         pass

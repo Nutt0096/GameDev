@@ -28,5 +28,6 @@ gSounds = {
     'no-select': pygame.mixer.Sound('sounds/no-select.wav'),
     'confirm': pygame.mixer.Sound('sounds/confirm.wav'),
     'victory': pygame.mixer.Sound('sounds/Z0mg ⧹⧸Ict0ry!! ^O^.wav'),
+    'defeat': pygame.mixer.Sound('sounds/Sad Violin.wav'),
     
 }
