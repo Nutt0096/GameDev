@@ -17,6 +17,7 @@ class SelectCharacterState(BaseState):
         self.team_select_show = []
         self.character_select_num = []
         self.curr_num_char = 0
+        self.current_stage = 1
         self.coins = 0
 
         self.fighter = Fighter()
@@ -73,7 +74,7 @@ class SelectCharacterState(BaseState):
 
                         if self.curr_num_char == NUM_CHARACTER:
                             g_state_manager.Change('stage', {
-                                'level': 1,
+                                'level': self.current_stage,
                                 'team': self.team_character,
                                 'stages': [False, False, False, False, False],
                                 'coins': self.coins

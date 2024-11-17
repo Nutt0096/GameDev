@@ -1,7 +1,7 @@
 import random
 
 def roll_dice(sides: int) -> int:
-    # Roll a dice with the given number of sides.
+    """Roll a dice with the given number of sides."""
     return random.randint(1, sides)
 
 def resolve_attack(attacker, target, weapon):
@@ -34,11 +34,15 @@ def resolve_spell(caster, target, spell, monsters, selected_monster_index):
         if hit_accuracy > target["CHA"]:
             damage = roll_dice(spell["damage_dice"]) + caster["INT"]
             target["hp"] -= damage
-
-            if target["hp"] <= 0:
-                monsters.pop(selected_monster_index)
-                return f"{caster['name']} casts {spell['name']} and deals {damage} damage to {target['name']}! {target['name']} is defeated!"
-            return f"{caster['name']} casts {spell['name']} and deals {damage} damage to {target['name']}!"
+            return f"Hit! {caster['name']} deals {damage} damage to {target['name']}."
         else:
-            return f"{caster['name']}'s spell {spell['name']} was resisted by {target['name']}!"
+            return f"Miss! {caster['name']}'s total accuracy ({hit_accuracy}) < {target['DEF']}."
 
+def resolve_attack_monster(monster, target):
+    hit_accuracy = roll_dice(20) + monster["ACC"]
+    if hit_accuracy >= target["DEF"]:
+        damage = roll_dice(10) + monster["STR"]
+        target["hp"] -= damage
+        return f"{monster['name']} attacks {target['name']} and deals {damage} damage!"
+    else:
+        return f"Miss! {monster['name']}'s total accuracy ({hit_accuracy}) < {target['DEF']}."

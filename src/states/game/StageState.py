@@ -11,8 +11,8 @@ class StageState(BaseState):
         self.bg_image = pygame.transform.scale(self.bg_image, (WIDTH, HEIGHT))
         self.stages = [] # False = uncleared, True = cleared
         self.team_characters = []
-        self.current_stage = 1
         self.coins = 0
+        self.current_stage = 1
         self.bought_items = []
         self.bought_weapons = []
         self.bought_spells = []
@@ -27,7 +27,7 @@ class StageState(BaseState):
 
         for i in params:
             if i == "level":
-                self.current_stage = params[i]-1
+                self.current_stage = params[i]
             elif i == "coins":
                 self.coins = params[i]
             elif i == "stages":
@@ -89,7 +89,7 @@ class StageState(BaseState):
             pygame.draw.rect(screen, color, rect)
 
             # Draw outline to indicate the selected stage
-            if i == self.current_stage:
+            if i == self.current_stage - 1:
                 pygame.draw.rect(screen, (255, 255, 255), rect, 3)  # White border for current selection
 
         # Display coin count

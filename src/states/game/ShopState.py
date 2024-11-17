@@ -358,7 +358,7 @@ class ShopState(BaseState):
 
         for i in params:
             if i == "level":
-                self.current_stage = params[i]-1
+                self.current_stage = params[i]
             elif i == "team":
                 self.team_characters = params[i]
             elif i == "stages":
