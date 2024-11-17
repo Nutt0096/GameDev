@@ -378,11 +378,11 @@ class ShopState(BaseState):
             screen.blit(s, (720, 300))
             pygame.draw.rect(screen, BLACK, pygame.Rect(720, 300, 500, 60), 2)
             if self.gob_dialogue_type == 0:
-                text = self.font_s.render(f'Gob: Thank for buying!', False, BLACK)
+                text = self.font_s.render(f'Thank for buying!', False, BLACK)
                 text_rect = text.get_rect(center=(720 + 500 // 2, 300 + 60 // 2))
                 screen.blit(text, text_rect)
             elif self.gob_dialogue_type == 1:
-                text = self.font_s.render(f'Gob: You don\'t have enough money!', False, BLACK)
+                text = self.font_s.render(f'You don\'t have enough money!', False, BLACK)
                 text_rect = text.get_rect(center=(720 + 500 // 2, 300 + 60 // 2))
                 screen.blit(text, text_rect)
 
