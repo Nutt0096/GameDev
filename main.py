@@ -21,7 +21,8 @@ class GameMain:
             'selectCharacter': SelectCharacterState(),
             'stage': StageState(),
             'combat': CombatState(), # add combat stage
-            'shop': ShopState()
+            'shop': ShopState(),
+            'victory': VictoryState()
         }
 
         g_state_manager.SetStates(states)
@@ -29,7 +30,7 @@ class GameMain:
     def PlayGame(self):
         clock = pygame.time.Clock()
 
-        g_state_manager.Change("start",None)
+        g_state_manager.Change("start", None)
 
         while True:
             pygame.display.set_caption("game running with {:d} FPS".format(int(clock.get_fps())))

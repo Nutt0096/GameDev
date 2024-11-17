@@ -261,16 +261,19 @@ class CombatState(BaseState):
             self.current_stage += 1
             self.coins += 50
 
-            g_state_manager.Change('shop', {
-                'level': self.current_stage,
-                'team': self.characters,
-                'stages': self.stages,
-                'coins': self.coins,
-                'item-list': self.bought_items,
-                'weapon-list': self.bought_weapons,
-                'spell-list': self.bought_spells,
-                'armor-list': self.bought_armors
-            })
+            if self.current_stage >= 6:  # set to 6, may change for debugging purpose
+                g_state_manager.Change('victory', None)
+            else:
+                g_state_manager.Change('shop', {
+                    'level': self.current_stage,
+                    'team': self.characters,
+                    'stages': self.stages,
+                    'coins': self.coins,
+                    'item-list': self.bought_items,
+                    'weapon-list': self.bought_weapons,
+                    'spell-list': self.bought_spells,
+                    'armor-list': self.bought_armors
+                })
         elif not self.characters:  # If no characters remain, transition to game over
             print("All characters defeated! Game over.")
 

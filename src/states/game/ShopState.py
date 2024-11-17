@@ -23,7 +23,7 @@ class ShopState(BaseState):
         # self.screen = pygame.display.set_mode((WIDTH, HEIGHT))
 
         self.bg_image = pygame.image.load("./graphics/ShopBG.jpg")
-        self.bg_image = pygame.transform.scale(self.bg_image, (WIDTH + 5, HEIGHT + 5))
+        self.bg_image = pygame.transform.scale(self.bg_image, (WIDTH + 4, HEIGHT + 4))
 
         self.gob_img = pygame.image.load("./graphics/Gob the Seller.png")
         self.gob_img = pygame.transform.scale(self.gob_img, (300, 300))
@@ -156,7 +156,7 @@ class ShopState(BaseState):
                 self.gob_dialogue_type = -1
 
     def render(self, screen):
-        screen.blit(self.bg_image, (0, 0))
+        screen.blit(self.bg_image, (-2, -2))
 
         # Shop Panel
         s = pygame.Surface((600, 600), pygame.SRCALPHA)

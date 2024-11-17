@@ -6,7 +6,7 @@ from src.resources import *
 
 class StartState(BaseState):
     def __init__(self):
-        gSounds['Title_music'].play(-1)
+        # gSounds['Title_music'].play(-1)
 
         self.coins = 0
         self.bg_image = pygame.image.load("./graphics/MainMenu.png")
@@ -15,6 +15,9 @@ class StartState(BaseState):
     def Enter(self, params):
         
         print(self.bg_image)
+
+        gSounds['victory'].stop()
+        gSounds['Title_music'].play(-1)
         
         pass
 
