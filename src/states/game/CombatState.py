@@ -48,9 +48,7 @@ class CombatState(BaseState):
         self.animation_speed = 100
         self.animation_frame = 0
 
-        # <--- DUMMY DATA
-
-        self.right_panel_show = 0 # initial as show item (0=item, 1=item_selected, 2=weapon_selected, 3=spell_selected, 4=attack_selected, 5=escape_selected)
+        self.right_panel_show = 0 # initial as show item panel
 
         # Positioning
         self.character_positions = [(WIDTH/4, 150), (WIDTH/4, 250), (WIDTH/4, 350)]
@@ -258,8 +256,6 @@ class CombatState(BaseState):
             pool = MONSTER_POOLS[stage]
             num_monsters = min(3, len(pool))
             monster_config_list = random.sample(pool, num_monsters)
-            print("--------------------------------------")
-            print("Monsters: ", monster_config_list)
             self.monsters = self.create_monsters(monster_config_list)
         else:
             self.monsters = []
@@ -274,29 +270,31 @@ class CombatState(BaseState):
         # Display characters
         for i, character in enumerate(self.team_characters):
             pos = self.character_positions[i]
-            # if character['img']:
-            #     screen.blit(character['img'], pos)
-            # else:
-            #     pygame.draw.circle(screen, self.BLACK, pos, 30)  # Placeholder for character image
             character.position = pos
             character.render(screen)
-            self.draw_health_bar(screen, pos[0] - 40, pos[1] - 50, character.HP)
-            self.draw_mana_bar(screen, pos[0] - 40, pos[1] - 35, character.MP)
+            self.draw_health_bar(screen, pos[0] - 40, pos[1] - 35, character.HP)
+            self.draw_mana_bar(screen, pos[0] - 40, pos[1] - 15, character.MP)
             if i == selected_character:
-                pygame.draw.polygon(screen, self.GREEN, [(pos[0], pos[1] - 50), (pos[0] - 10, pos[1] - 60), (pos[0] + 10, pos[1] - 60)])
+                shift_amount = 20
+                pygame.draw.polygon(screen, self.GREEN, [
+                    (pos[0] + shift_amount, pos[1] - 50),  # Shift the first point
+                    (pos[0] + shift_amount - 10, pos[1] - 60),  # Shift the second point
+                    (pos[0] + shift_amount + 10, pos[1] - 60)   # Shift the third point
+                ])
 
         # Display monsters
         for i, monster in enumerate(self.monsters):
             pos = self.monster_positions[i]
-            # if monster.img:
-            #     screen.blit(monster.img, pos)
-            # else:
-            #     pygame.draw.circle(screen, self.BLACK, pos, 30)  # Placeholder for monster image
             monster.position = pos
             monster.render(screen)
-            self.draw_health_bar(screen, pos[0] - 40, pos[1] - 50, monster.HP)
+            self.draw_health_bar(screen, pos[0] - 40, pos[1] - 35, monster.HP)
             if i == selected_monster:
-                pygame.draw.polygon(screen, self.GREEN, [(pos[0], pos[1] - 50), (pos[0] - 10, pos[1] - 60), (pos[0] + 10, pos[1] - 60)])
+                shift_amount = 30
+                pygame.draw.polygon(screen, self.GREEN, [
+                    (pos[0] + shift_amount, pos[1] - 50),  # Shift the first point
+                    (pos[0] + shift_amount - 10, pos[1] - 60),  # Shift the second point
+                    (pos[0] + shift_amount + 10, pos[1] - 60)   # Shift the third point
+                ])
 
     def display_action_panel(self, screen, selected_character):
         if selected_character is None:
@@ -412,9 +410,7 @@ class CombatState(BaseState):
         self.waiting_for_player_action = True
    
     def update(self, dt, events):
-        print(f"self.turn order: {self.turn_order}")
-        print(f"character:{self.team_characters} vs mons:{self.monsters}" )
-        # self.turn_order = self.team_characters + self.monsters
+
         self.animation_time += dt
         if self.animation_time > self.animation_speed:
             self.animation_time = 0

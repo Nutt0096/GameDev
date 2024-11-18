@@ -33,7 +33,7 @@ class Character():
     def update(self, dt):
         """Update the character's animation."""
         self.current_animation.update(dt)
-        
+
     def show_stats(self):
         print(f"{self.Name}'s Stats:")
         print(f"STR: {self.STR}, INT: {self.INT}, CON: {self.CON}")
@@ -43,7 +43,3 @@ class Character():
         """ Render the current animation. """
         frame_surface = self.current_animation.image
         screen.blit(frame_surface, self.position)
-
-    def is_attacking(self):
-        """ Placeholder for attack logic. """
-        return False  # Replace with actual condition for attacking

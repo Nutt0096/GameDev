@@ -13,5 +13,6 @@ class Archer(Character):
         self.load_animations(self.Name)
 
     def update(self, dt):
+        self.current_animation = self.idle_animation
         super().update(dt)
     

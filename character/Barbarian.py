@@ -14,4 +14,5 @@ class Barbarian(Character):
     
 
     def update(self, dt):
+        self.current_animation = self.idle_animation
         super().update(dt)

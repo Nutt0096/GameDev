@@ -11,21 +11,7 @@ class Knight(Character):
             }
         )
         self.load_animations(self.Name)
-
-        # Load knight-specific animations (idle, attack, etc.)
-
-    
     def update(self, dt):
-        # Example: Switch to attack animation when attacking
-        if self.is_attacking():
-            # self.current_animation = self.attack_animation
-            pass
-        else:
-            self.current_animation = self.idle_animation
-        
+        self.current_animation = self.idle_animation
         # Update the current animation frame
         super().update(dt)  # Call the base class update to handle the animation
-
-    def is_attacking(self):
-        """ For demo purposes, let's say the knight is always attacking. """
-        return True  # Replace with actual attack condition

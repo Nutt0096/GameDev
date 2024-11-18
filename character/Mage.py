@@ -37,15 +37,5 @@ class Mage(Character):
         self.load_animations(self.Name)
 
     def update(self, dt):
-        # Example: Switch to casting spell animation when the mage is casting a spell
-        if self.is_casting_spell():
-            # self.current_animation = self.attack_animation
-            pass
-        else:
-            self.current_animation = self.idle_animation
-        
+        self.current_animation = self.idle_animation
         super().update(dt)
-
-    def is_casting_spell(self):
-        """ For demo purposes, let's say the mage is always casting a spell. """
-        return True  # Replace with actual spell-casting condition

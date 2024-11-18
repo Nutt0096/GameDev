@@ -43,8 +43,6 @@ class Monster():
 
     def render(self, screen):
         """ Render the current animation. """
-        # frame_surface = self.current_animation.image
-        # screen.blit(frame_surface, self.position)
 
         if self.current_animation:
             frame_surface = self.current_animation.image
@@ -52,8 +50,4 @@ class Monster():
             screen.blit(frame_surface, self.position)
         else:
             print("Error: current_animation is None!")
-
-    def is_attacking(self):
-        """ Placeholder for attack logic. """
-        return False  # Replace with actual condition for attacking
 

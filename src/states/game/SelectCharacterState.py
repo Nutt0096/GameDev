@@ -24,22 +24,6 @@ class SelectCharacterState(BaseState):
         self.coins = 0
         self.inventory = []
 
-        # Create instances of the characters
-        self.knight = Knight()
-        self.mage = Mage()
-        self.archer = Archer()
-        self.sorcerer = Sorcerer()
-        self.babarian = Barbarian()
-
-        # Map character id to character instance
-        self.charter_sheet = {
-            1: self.knight,
-            2: self.mage,
-            3: self.archer,
-            4: self.sorcerer,
-            5: self.babarian
-        }
-
         # Load arrow images for navigation
         self.l_arrow_image = sprite_collection["l_arrow"].image
         self.r_arrow_image = sprite_collection["r_arrow"].image
@@ -72,7 +56,31 @@ class SelectCharacterState(BaseState):
     def Enter(self, params):
         gSounds['Title_music'].stop()
         gSounds['Select_music'].play(-1)
-        pass
+    
+        self.curr_character = 1
+        self.team_character = []
+        self.team_select_show = []
+        self.character_select_num = []
+        self.curr_num_char = 0
+        self.current_stage = 1
+        self.coins = 0
+        self.inventory = []
+
+         # Create instances of the characters
+        self.knight = Knight()
+        self.mage = Mage()
+        self.archer = Archer()
+        self.sorcerer = Sorcerer()
+        self.babarian = Barbarian()
+
+        # Map character id to character instance
+        self.charter_sheet = {
+            1: self.knight,
+            2: self.mage,
+            3: self.archer,
+            4: self.sorcerer,
+            5: self.babarian
+        }
 
     def update(self, dt, events):
         # Update animation time (this controls how quickly we change frames)
@@ -116,9 +124,17 @@ class SelectCharacterState(BaseState):
 
                         # If the team is full, transition to the next state (e.g., stage)
                         if self.curr_num_char == NUM_CHARACTER:
+                            self.s_current_stage = self.current_stage
+                            self.s_team_character = self.team_character
+
+                            self.curr_num_char = 0
+                            self.current_stage = 1
+                            self.team_character = []
+                            self.coins = 0
+
                             g_state_manager.Change('stage', {
-                                'level': self.current_stage,
-                                'team': self.team_character,
+                                'level': self.s_current_stage,
+                                'team': self.s_team_character,
                                 'stages': [False, False, False, False, False],
                                 'coins': self.coins
                             })
