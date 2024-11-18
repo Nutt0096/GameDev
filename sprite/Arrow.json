@@ -1,6 +1,5 @@
 {
     "spriteSheetURL": "./graphics/arrows.png",
-    "type":"none",
     "size":[24,24],
     "sprites":[
         {
