@@ -20,7 +20,7 @@ class VictoryState(BaseState):
     def __init__(self):
         super().__init__()
 
-        self.bg_image = pygame.image.load("./graphics/background.jpg")
+        self.bg_image = pygame.image.load("./graphics/Victory.png")
         self.bg_image = pygame.transform.scale(self.bg_image, (WIDTH + 4, HEIGHT + 4))
 
         self.gob_img = pygame.image.load("./graphics/Gob Thumb Shine.png")
@@ -38,7 +38,9 @@ class VictoryState(BaseState):
         # self.font_s2 = pygame.font.Font('./fonts/MedievalSharp-Regular.ttf', 24)
         # self.font_shop2 = pygame.font.Font('./fonts/MedievalSharp-Regular.ttf', 36)
         # self.font_m2 = pygame.font.Font('./fonts/MedievalSharp-Regular.ttf', 48)
-        # self.font_l2 = pygame.font.Font('./fonts/MedievalSharp-Regular.ttf', 96)
+        # self.font_l2 = pygame.font.Font('./fonts/MedievalSharp-Regular.ttf', 96)\
+
+        self.money = 0
 
     def update(self, dt, events):
         for event in events:
@@ -58,6 +60,10 @@ class VictoryState(BaseState):
 
         screen.blit(self.gob_img, (WIDTH // 2 + 20, HEIGHT // 2 - 260))
 
+        text = self.font_shop.render(f'Coins: {self.money}', False, BLACK)
+        text_rect = text.get_rect(center=(WIDTH // 2, HEIGHT // 2 - 300))
+        screen.blit(text, text_rect)
+
         text = self.font_m.render(f'Press Enter key to return to main menu.', False, BLACK)
         text_rect = text.get_rect(center=(WIDTH // 2, HEIGHT // 2 + 200))
         screen.blit(text, text_rect)
@@ -65,6 +71,10 @@ class VictoryState(BaseState):
     def Enter(self, params):
         gSounds['Stage1_music'].stop()
         gSounds['victory'].play(-1)
+
+        for i in params:
+            if i == "coins":
+                self.money = params[i]
 
     def Exit(self):
         pass

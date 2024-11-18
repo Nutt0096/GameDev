@@ -226,7 +226,7 @@ class CombatState(BaseState):
             self.coins += 50
 
             if self.current_stage >= 6:  # set to 6, may change for debugging purpose
-                g_state_manager.Change('victory', None)
+                g_state_manager.Change('victory', {'coins': self.coins})
             else:
                 g_state_manager.Change('shop', {
                     'level': self.current_stage,
