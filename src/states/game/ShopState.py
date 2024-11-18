@@ -64,7 +64,10 @@ class ShopState(BaseState):
         with open('./items.json', 'r') as f:
             self.template = json.load(f)
 
-        self.shop_list = self.random_shop()
+        self.shop_list = [[{}, {}, {}, {}],
+                          [{}, {}, {}, {}],
+                          [{}, {}, {}, {}],
+                          [{}, {}, {}, {}]]
 
     def update(self, dt, events):
         for event in events:
@@ -389,6 +392,8 @@ class ShopState(BaseState):
     def Enter(self, params):
         gSounds['Stage1_music'].stop()
         gSounds['Shop_music'].play(-1)
+
+        self.shop_list = self.random_shop()
 
         for i in params:
             if i == "level":
