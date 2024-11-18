@@ -9,8 +9,13 @@ def resolve_attack(attacker, target, weapon):
     hit_accuracy = roll_dice(20) + attacker.ACC + weapon["ACC"]
     
     if hit_accuracy >= target.DEF:
-        damage = roll_dice(weapon["damage_dice"]) + attacker.STR
-        target.HP -= damage
+        sum_damage = 0
+
+        for i in range(weapon["dice"]):
+            damage = roll_dice(weapon["damage_dice"]) + attacker.STR + weapon["STR"]
+            sum_damage += damage
+        
+        target.HP -= sum_damage
         return f"Hit! {attacker.Name} deals {damage} damage to {target.Name}."
     else:
         return f"Miss! {attacker.Name}'s total accuracy ({hit_accuracy}) < {target.DEF}."

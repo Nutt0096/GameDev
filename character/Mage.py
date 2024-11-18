@@ -7,7 +7,9 @@ class Mage(Character):
             {
                 "name": "Dagger",
                 "ACC": 4,
-                "damage_dice": 4
+                "STR": 0,
+                "damage_dice": 4,
+                "dice": 1
             }
         )
         self.Spells = [

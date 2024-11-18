@@ -29,6 +29,8 @@ class Character():
         # self.attack_animation = self.sprite_manager.spriteCollection.get(attack_sprite).animation
         self.current_animation = self.idle_animation
 
+    def addWeapon(self, weapon):
+        self.Weapons.append(weapon)
     
     def update(self, dt):
         """Update the character's animation."""

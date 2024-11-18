@@ -7,7 +7,9 @@ class Knight(Character):
             {
                     "name": "Sword",
                     "ACC": 2,
-                    "damage_dice": 8
+                    "STR": 0,
+                    "damage_dice": 8,
+                    "dice": 1
             }
         )
         self.load_animations(self.Name)

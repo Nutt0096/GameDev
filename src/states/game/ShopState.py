@@ -417,16 +417,7 @@ class ShopState(BaseState):
         return_shop[1] = random.sample(self.template['weapons'][1:], k=4)
         return_shop[2] = random.sample(self.template['spells'][1:], k=4)
         return_shop[3] = random.sample(self.template['armors'][1:], k=4)
-        # print(len(self.template['items'][1:]))
-        # print(len(self.template['weapons'][1:]))
-        # print(len(self.template['spells'][1:]))
-        # print(len(self.template['armors'][1:]))
-        # print('Knight ', len([x for x in self.template['weapons'][1:] if x["user"] == 'knight']))
-        # print('Archer ', len([x for x in self.template['weapons'][1:] if x["user"] == 'archer']))
-        # print('Barbarian ', len([x for x in self.template['weapons'][1:] if x["user"] == 'barbarian']))
-        # print('Wizard ', len([x for x in self.template['weapons'][1:] if x["user"] == 'wizard']))
-        # print('Sorcerer ', len([x for x in self.template['weapons'][1:] if x["user"] == 'sorcerer']))
-        # print(json.dumps(return_shop, indent=4))
+
         return return_shop
 
     def get_selected(self):

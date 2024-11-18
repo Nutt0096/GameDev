@@ -7,7 +7,9 @@ class Barbarian(Character):
             {
                     "name": "Axe",
                     "ACC": 1,
-                    "damage_dice": 10
+                    "STR": 0,
+                    "damage_dice": 10,
+                    "dice": 1
             }
         )
         self.load_animations(self.Name)

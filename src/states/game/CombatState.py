@@ -60,6 +60,8 @@ class CombatState(BaseState):
         self.current_turn_index = 0
         self.waiting_for_player_action = True
 
+        self.weapon_update(self.team_characters,self.bought_weapons)
+
     def handle_turn(self):
         """Handle the current entity's turn."""
         if self.waiting_for_player_action and self.player_turn:
@@ -376,6 +378,35 @@ class CombatState(BaseState):
             return comeback_button, just_kidding_button
         return None, None
     
+
+    def weapon_update(self,team_characters,bought_weapons):
+        for character in team_characters:
+            for weapon in bought_weapons:
+                print(weapon['user'], character.Name)
+                if weapon['user'] == character.Name:
+                    dice_str = weapon["dice"]
+                    dice_parts = dice_str.split("d")
+
+                    num_dice = int(dice_parts[0])
+                    damage_dice = int(dice_parts[1])
+
+                    print({
+                            "name": weapon["name"],
+                            "ACC": weapon["modify stats"]["ACC"],
+                            "STR": weapon["modify stats"]["STR"],
+                            "damage_dice": damage_dice,
+                            "dice":num_dice,
+                        })
+                    character.Weapons.append(
+                        {
+                            "name": weapon["name"],
+                            "ACC": weapon["modify stats"]["ACC"],
+                            "STR": weapon["modify stats"]["STR"],
+                            "damage_dice": damage_dice,
+                            "dice":num_dice,
+                        })
+                    
+
     def Enter(self, params):
         self.selected_weapon = None 
         self.selected_spell = None
@@ -398,11 +429,13 @@ class CombatState(BaseState):
                 self.bought_items = params[i]
             elif i == "weapon-list":
                 self.bought_weapons = params[i]
+                print(self.bought_weapons)
             elif i == "spell-list":
                 self.bought_spells = params[i]
             elif i == "armor-list":
                 self.bought_armors = params[i]
 
+        self.weapon_update(self.team_characters,self.bought_weapons)
 
         self.player_turn = True
         self.turn_order = self.team_characters + self.monsters

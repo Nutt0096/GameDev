@@ -7,7 +7,9 @@ class Archer(Character):
             {
                     "name": "Short Bow",
                     "ACC": 4,
-                    "damage_dice": 6
+                    "STR": 0,
+                    "damage_dice": 6,
+                    "dice": 1
             }
         )
         self.load_animations(self.Name)
