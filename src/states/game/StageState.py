@@ -43,15 +43,6 @@ class StageState(BaseState):
             elif i == "armor-list":
                 self.bought_armors = params[i]
 
-        # self.team = params['team']  # List of characters in the player's team
-        # self.level = params['level']  # Current level of the game
-        # self.coins = params['coins']
-        # self.inventory = params['inventory']  # The player's inventory (or item-list)
-        # self.weapons = params['weapon-list']  # List of bought weapons
-        # self.spells = params['spell-list']  # List of bought spells
-        # self.armors = params['armor-list']  # List of bought armors
-
-
     def Exit(self):
         pass
 

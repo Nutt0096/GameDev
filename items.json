@@ -5,7 +5,7 @@
             "description": "A description for an item",
             "cost": 0,
             "rarity": "common",
-            "on use": "Do sth"
+            "on use": "Do something"
         },
         {
             "name": "Gros Michel Banana",
@@ -33,7 +33,7 @@
             "description": "My hearts is Chocolate Cornet. Increase ACC by 1 for the next 2 rounds",
             "cost": 20,
             "rarity": "common",
-            "on use": "Increase ACC by 1 for the next 2 rounds"
+            "on use": "Increase ACC by 1"
         },
         {
             "name": "Apple Juice",
@@ -86,17 +86,17 @@
         },
         {
             "name": "Midas Bomb",
-            "description": "Deals 3d6 damage to enemy. If it died, gain 2d4*10 gold",
+            "description": "Deals 3d6 damage to enemy. If it died, gain 2d4*10 coins",
             "cost": 60,
             "rarity": "rare",
-            "on use": "Deals 3d6 damage to enemy. If it died, gain 2d4*10 gold"
+            "on use": "Deals 3d6 damage to an enemy. If it died, gain 2d4*10 coins"
         },
         {
             "name": "Emerald Splash",
             "description": "No one can deflect the Emerald Splash. Deals 4d12 damage to enemy",
             "cost": 80,
             "rarity": "rare",
-            "on use": "Deals 4d12 damage to enemy. Has 1 in 6 chance to deal on yourself."
+            "on use": "Deals 4d12 damage to an enemy. Has 1 in 6 chance to deal on yourself"
         },
         {
             "name": "John's Bible",
