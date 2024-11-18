@@ -33,11 +33,7 @@ class Character():
     def update(self, dt):
         """Update the character's animation."""
         self.current_animation.update(dt)
-    
-    def render(self, screen, x, y):
-        """Render the character's current animation frame."""
-        self.sprite_animation.render(screen, x, y)
-
+        
     def show_stats(self):
         print(f"{self.Name}'s Stats:")
         print(f"STR: {self.STR}, INT: {self.INT}, CON: {self.CON}")

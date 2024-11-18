@@ -1,10 +1,10 @@
 {
-    "spriteSheetURL": "./graphics/monsters/Crying2.png",
+    "spriteSheetURL": "./graphics/monsters/Demon2.png",
     "type":"animation",
-    "size":[14,16],
+    "size":[14,21],
     "sprites":[
         {
-            "name":"Crying2",
+            "name":"Demon2",
             "images":[
             {"x":0,"y":0,"scalefactor":3},
             {"x":16,"y":0,"scalefactor":3},

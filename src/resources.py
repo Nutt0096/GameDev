@@ -10,8 +10,23 @@ character_image_list = [sprite_collection["knight_idle"].animation,
                         sprite_collection["mage_idle"].animation,
                         sprite_collection["archer_idle"].animation,
                         sprite_collection["sorcerer_idle"].animation,
-                        sprite_collection["barbarian_idle"].animation
+                        sprite_collection["barbarian_idle"].animation,
                         ]
+
+monster_image_list = [sprite_collection["Crying1"].animation,
+                      sprite_collection["Crying2"].animation,
+                      sprite_collection["Demon1"].animation,
+                      sprite_collection["Demon2"].animation,
+                      sprite_collection["Ghost1"].animation,
+                      sprite_collection["Ghost2"].animation,
+                      sprite_collection["Ghost3"].animation,
+                      sprite_collection["Orc1"].animation,  
+                      sprite_collection["Orc2"].animation,
+                      sprite_collection["Skeleton"].animation,
+                      sprite_collection["Slime1"].animation,
+                      sprite_collection["Slime2"].animation,
+                      ]
+
 
 gFonts = {
     'M_small': pygame.font.Font('./fonts/MedievalSharp-Regular.ttf', 24),

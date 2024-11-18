@@ -62,6 +62,18 @@ class SpriteManager:
                 "./sprite/Archer.json",
                 "./sprite/Sorcerer.json",
                 "./sprite/Barbarian.json",
+                "./sprite/monster/Crying1.json",
+                "./sprite/monster/Crying2.json",
+                "./sprite/monster/Demon1.json",
+                "./sprite/monster/Demon2.json",
+                "./sprite/monster/Ghost1.json",
+                "./sprite/monster/Ghost2.json",
+                "./sprite/monster/Ghost3.json",
+                "./sprite/monster/Orc1.json",
+                "./sprite/monster/Orc2.json",
+                "./sprite/monster/Skeleton.json",
+                "./sprite/monster/Slime1.json",
+                "./sprite/monster/Slime2.json",
             ]
         )
 

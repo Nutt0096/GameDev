@@ -3,7 +3,7 @@ from src.combat_utils import *
 from src.item_effects import apply_item_effect
 from character import *
 from monster.Monster import MONSTER_POOLS
-from character.monster import Enemy
+from character.Monster import Monster
 import pygame, sys, random, json
 
 from src.constants import *
@@ -35,14 +35,7 @@ class CombatState(BaseState):
         self.selected_character = 0
         self.selected_monster = 0
 
-        self.mon1 = Enemy('Monster1', 25, 12, 7)
-        self.mon2 = Enemy('Monster2', 15, 13, 8)
-        self.mon3 = Enemy('Monster3', 35, 9, 14)
-        self.monsters = [
-            self.mon1,
-            self.mon2,
-            self.mon3
-        ]
+        self.monsters = []
 
         # Item setup
         self.bought_items = []
@@ -54,7 +47,6 @@ class CombatState(BaseState):
         self.animation_time = 0
         self.animation_speed = 100
         self.animation_frame = 0
-
 
         # <--- DUMMY DATA
 
@@ -122,7 +114,7 @@ class CombatState(BaseState):
                         result = resolve_spell(current_entity, target, spell, self.monsters, self.selected_monster)
                         print(result)
 
-                        if target["hp"] <= 0:  # Adjust selection after a monster is defeated
+                        if target.HP <= 0:  # Adjust selection after a monster is defeated
                             print(f"{target.Name} is defeated!")
                             self.monsters.remove(target)
                             if not self.monsters:
@@ -250,13 +242,25 @@ class CombatState(BaseState):
             self.selected_monster = (self.selected_monster + 1) % len(self.monsters)
         elif action == "attack":
             self.waiting_for_player_action = False  # Execute the attack on the selected monster
+    
+    def create_monsters(self,monsters):
+        mon_all = []
+        for i in range( len(monsters)):
+            Each_Monster = Monster(monsters[i])
+            print("Monter:", Each_Monster)
+            mon_all.append(Each_Monster)
 
+        return mon_all
+    
     def load_monsters_for_stage(self, stage):
         """Load monsters for the given stage."""
         if stage in MONSTER_POOLS:
             pool = MONSTER_POOLS[stage]
             num_monsters = min(3, len(pool))
-            self.monsters = random.sample(pool, num_monsters)
+            monster_config_list = random.sample(pool, num_monsters)
+            print("--------------------------------------")
+            print("Monsters: ", monster_config_list)
+            self.monsters = self.create_monsters(monster_config_list)
         else:
             self.monsters = []
 
@@ -284,12 +288,12 @@ class CombatState(BaseState):
         # Display monsters
         for i, monster in enumerate(self.monsters):
             pos = self.monster_positions[i]
-            if monster.img:
-                screen.blit(monster.img, pos)
-            else:
-                pygame.draw.circle(screen, self.BLACK, pos, 30)  # Placeholder for monster image
-            # monster.position = pos
-            # monster.render(screen)
+            # if monster.img:
+            #     screen.blit(monster.img, pos)
+            # else:
+            #     pygame.draw.circle(screen, self.BLACK, pos, 30)  # Placeholder for monster image
+            monster.position = pos
+            monster.render(screen)
             self.draw_health_bar(screen, pos[0] - 40, pos[1] - 50, monster.HP)
             if i == selected_monster:
                 pygame.draw.polygon(screen, self.GREEN, [(pos[0], pos[1] - 50), (pos[0] - 10, pos[1] - 60), (pos[0] + 10, pos[1] - 60)])
@@ -382,15 +386,10 @@ class CombatState(BaseState):
         self.selected_character = 0
         self.selected_monster = 0
 
-        self.player_turn = True
-        self.turn_order = self.team_characters + self.monsters
-        self.current_turn_index = 0
-        self.waiting_for_player_action = True
-
         for i in params:
             if i == "level":
                 self.current_stage = params[i]
-                # self.load_monsters_for_stage(self.current_stage)
+                self.load_monsters_for_stage(self.current_stage)
             elif i == "team":
                 self.team_characters = params[i]
             elif i == "stages":
@@ -406,9 +405,20 @@ class CombatState(BaseState):
             elif i == "armor-list":
                 self.bought_armors = params[i]
 
-            print(f"number of character:{len(self.team_characters)} --------------------------")
+
+        self.player_turn = True
+        self.turn_order = self.team_characters + self.monsters
+        self.current_turn_index = 0
+        self.waiting_for_player_action = True
    
     def update(self, dt, events):
+        print(f"self.turn order: {self.turn_order}")
+        print(f"character:{self.team_characters} vs mons:{self.monsters}" )
+        # self.turn_order = self.team_characters + self.monsters
+        self.animation_time += dt
+        if self.animation_time > self.animation_speed:
+            self.animation_time = 0
+            self.animation_frame = (self.animation_frame + 1) % 4
 
         for event in events:
             if event.type == pygame.QUIT:
@@ -490,6 +500,9 @@ class CombatState(BaseState):
 
         for character in self.team_characters:
             character.update(dt)
+
+        for monster in self.monsters:
+            monster.update(dt)
 
     def render(self, screen):
         screen.blit(self.bg_image, (0, 0))  # Draw background image
