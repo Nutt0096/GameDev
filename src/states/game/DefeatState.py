@@ -38,7 +38,8 @@ class DefeatState(BaseState):
                 pygame.quit()
                 sys.exit()
             if event.type == pygame.KEYDOWN:
-                g_state_manager.Change('start', None)
+                if event.key == pygame.K_RETURN:
+                    g_state_manager.Change('start', None)
 
     def render(self, screen):
         screen.blit(self.bg_image, (-2, -2))
@@ -47,7 +48,7 @@ class DefeatState(BaseState):
         text_rect = text.get_rect(center=(WIDTH // 2, HEIGHT // 2))
         screen.blit(text, text_rect)
 
-        text = self.font_m.render(f'Press any key to return to main menu.', False, RED)
+        text = self.font_m.render(f'Press Enter key to return to main menu.', False, RED)
         text_rect = text.get_rect(center=(WIDTH // 2, HEIGHT // 2 + 200))
         screen.blit(text, text_rect)
 
