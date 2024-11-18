@@ -3,7 +3,7 @@ from src.combat_utils import *
 from src.item_effects import apply_item_effect
 from character import *
 from monster.Monster import MONSTER_POOLS
-from character.Enemy import Enemy
+from character.monster import Enemy
 import pygame, sys, random, json
 
 from src.constants import *
