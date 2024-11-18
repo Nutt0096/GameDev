@@ -1,10 +1,10 @@
 {
-    "spriteSheetURL": "./graphics/knight.png",
+    "spriteSheetURL": "./graphics/barbarian.png",
     "type":"animation",
-    "size":[16,20],
+    "size":[16,21],
     "sprites":[
         {
-            "name":"knight_idle",
+            "name":"barbarian_idle",
             "images":[
             {"x":0,"y":0,"scalefactor":3},
             {"x":16,"y":0,"scalefactor":3},
@@ -15,7 +15,6 @@
             {"x":0,"y":0,"scalefactor":3},
             "interval_time":0.15,
             "colorKey": null
-        }
-        ]
-            
+        }]       
+
 }

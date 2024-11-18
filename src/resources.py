@@ -6,9 +6,11 @@ g_state_manager = StateMachine()
 
 sprite_collection = SpriteManager().spriteCollection
 
-character_image_list = [sprite_collection["knight_idle"].image,
-                        sprite_collection["wizard_idle"].image,
-                        sprite_collection["archer_idle"].image
+character_image_list = [sprite_collection["knight_idle"].animation,
+                        sprite_collection["mage_idle"].animation,
+                        sprite_collection["archer_idle"].animation,
+                        sprite_collection["sorcerer_idle"].animation,
+                        sprite_collection["barbarian_idle"].animation
                         ]
 
 gFonts = {
