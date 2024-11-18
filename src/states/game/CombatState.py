@@ -2,6 +2,7 @@ from src.states.BaseState import BaseState
 from src.combat_utils import *
 from character import *
 from monster.Monster import MONSTER_POOLS
+from character.Enemy import Enemy
 import pygame, sys, random
 
 from src.constants import *
@@ -31,89 +32,15 @@ class CombatState(BaseState):
         self.spell_positions = []
         self.selected_character = 0
         self.selected_monster = 0
-        self.characters = [
-        {
-            "name": "Hero1",
-            "hp": 100,
-            "mp": 50,
-            "ACC": 5,
-            "STR": 8,
-            "INT": 6,
-            "DEF": 10,
-            "CHA": 9,
-            'img': None,
-            "weapons": [
-                {
-                    "name": "Sword",
-                    "ACC": 2,
-                    "damage_dice": 8
-                }
-            ],
-            "spells": []
-        },
-        {
-            "name": "Hero2",
-            "hp": 90,
-            "mp": 60,
-            "ACC": 6,
-            "STR": 6,
-            "INT": 4,
-            "DEF": 12,
-            "CHA": 8,
-            'img': None,
-            "weapons": [
-                {
-                    "name": "Axe",
-                    "ACC": 1,
-                    "damage_dice": 10
-                }
-            ],
-            "spells": []
-        },
-        {
-            "name": "Hero3",
-            "hp": 60,
-            "mp": 80,
-            "ACC": 8,
-            "STR": 4,
-            "INT": 10,
-            "DEF": 9,
-            "CHA": 14,
-            'img': None,
-            "weapons": [
-                {
-                    "name": "Dagger",
-                    "ACC": 4,
-                    "damage_dice": 4
-                }
-            ],
-            "spells": [
-                {
-                    "name": "Fireball",
-                    "ACC": 2,
-                    "damage_dice": 10,
-                    "mana_cost": 10,
-                    "effect": None
-                },
-                {
-                    "name": "Lightning Bolt",
-                    "ACC": 5,
-                    "damage_dice": 6,
-                    "mana_cost": 8,
-                    "effect": None
-                },
-                {
-                    "name": "Healing",
-                    "ACC": 0,
-                    "damage_dice": 10,
-                    "mana_cost": 15,
-                    "effect": "heal"
-                }
-            ]
-        }
-    ]
 
-        self.monsters = []   
+        self.mon1 = Enemy('Monster1', 25, 12, 7)
+        self.mon2 = Enemy('Monster2', 15, 13, 8)
+        self.mon3 = Enemy('Monster3', 35, 9, 14)
+        self.monsters = [
+            self.mon1,
+            self.mon2,
+            self.mon3
+        ]
         # self.item_inventory = [{'name': 'Item1', 'img': None}]
         # self.weapon_inventory = [{'name': 'Weapon1', 'img': None}]
         # self.spell_inventory = [{'name': 'Spell1', 'img': None}]
@@ -122,6 +49,11 @@ class CombatState(BaseState):
         self.bought_weapons = []
         self.bought_spells = []
         self.bought_armors = []
+
+         # character animation time
+        self.animation_time = 0
+        self.animation_speed = 100
+        self.animation_frame = 0
 
         # <--- DUMMY DATA
 
@@ -133,7 +65,7 @@ class CombatState(BaseState):
 
         # Turns
         self.player_turn = True
-        self.turn_order = self.characters + self.monsters
+        self.turn_order = self.team_characters + self.monsters
         self.current_turn_index = 0
         self.waiting_for_player_action = True
 
@@ -143,7 +75,7 @@ class CombatState(BaseState):
             return  # Only wait for player input during the player's turn
 
         current_entity = self.turn_order[self.current_turn_index]
-        print(f"Turn Index: {self.current_turn_index}, Entity: {current_entity['name']}")
+        print(f"Turn Index: {self.current_turn_index}, Entity: {current_entity.Name}")
 
         if not self.monsters:
             print("No monsters left!")
@@ -151,25 +83,25 @@ class CombatState(BaseState):
 
         if self.player_turn:
             # Handle player's turn
-            if current_entity in self.characters:
-                self.selected_character = self.characters.index(current_entity)
+            if current_entity in self.team_characters:
+                # self.selected_character = self.team_characters.index(current_entity)
                 target = self.monsters[self.selected_monster]
 
-                print(f"{current_entity['name']}'s turn!")
+                print(f"{current_entity.Name}'s turn!")
                 if self.right_panel_show == 1:  # Weapon panel selected
                     if self.selected_weapon is None:
-                        print(f"{current_entity['name']} has no weapon selected!")
+                        print(f"{current_entity.Name} has no weapon selected!")
                         self.waiting_for_player_action = True
                         return
 
-                    weapon = current_entity["weapons"][self.selected_weapon]
+                    weapon = current_entity.Weapons[self.selected_weapon]
                     if self.monsters:  # Check if there are still monsters to target
                         target = self.monsters[self.selected_monster]
                         result = resolve_attack(current_entity, target, weapon)
                         print(result)
 
-                        if target["hp"] <= 0:
-                            print(f"{target['name']} is defeated!")
+                        if target.HP <= 0:
+                            print(f"{target.Name} is defeated!")
                             self.monsters.remove(target)
                             if not self.monsters:
                                 self.selected_monster = 0  # Reset if no monsters remain
@@ -182,50 +114,50 @@ class CombatState(BaseState):
                         self.waiting_for_player_action = True
                         return
 
-                    spell = current_entity["spells"][self.selected_spell]
+                    spell = current_entity.Spells[self.selected_spell]
                     if self.monsters:  # Check if there are still monsters to target
                         target = self.monsters[self.selected_monster]
                         result = resolve_spell(current_entity, target, spell, self.monsters, self.selected_monster)
                         print(result)
 
-                        if target["hp"] <= 0:  # Adjust selection after a monster is defeated
-                            print(f"{target['name']} is defeated!")
+                        if target.HP <= 0:  # Adjust selection after a monster is defeated
+                            print(f"{target.Name} is defeated!")
                             self.monsters.remove(target)
                             if not self.monsters:
                                 self.selected_monster = 0  # Reset if no monsters remain
                             else:
                                 self.selected_monster = min(self.selected_monster, len(self.monsters) - 1)
 
-            if self.current_turn_index < len(self.characters):  # Ensure it's a character's turn
+            if self.current_turn_index < len(self.team_characters):  # Ensure it's a character's turn
                 self.selected_character = self.current_turn_index
-                print(f"Pointer moved to character: {self.characters[self.selected_character]['name']}")
+                print(f"Pointer moved to character: {self.team_characters[self.selected_character].Name}")
 
         else:
             # Handle enemy's turn automatically
             if current_entity in self.monsters:
-                target = random.choice(self.characters)
+                target = random.choice(self.team_characters)
                 result = resolve_attack_monster(current_entity, target)
                 print(result)
 
                 # Remove defeated character if necessary
-                if target["hp"] <= 0:
-                    self.characters.remove(target)
+                if target.HP <= 0:
+                    self.team_characters.remove(target)
 
         self.end_turn()
 
     def end_turn(self):
         """Advance to the next entity's turn."""
         # Rebuild the turn order dynamically
-        self.turn_order = [entity for entity in self.characters if entity["hp"] > 0] + \
-                      [entity for entity in self.monsters if entity["hp"] > 0]
+        self.turn_order = [entity for entity in self.team_characters if entity.HP > 0] + \
+                      [entity for entity in self.monsters if entity.HP > 0]
 
         # Skip defeated entities
         while self.turn_order and (
-            (self.current_turn_index < len(self.characters) and self.characters[self.current_turn_index]["hp"] <= 0) or
-            (self.current_turn_index >= len(self.characters) and 
+            (self.current_turn_index < len(self.team_characters) and self.team_characters[self.current_turn_index].HP <= 0) or
+            (self.current_turn_index >= len(self.team_characters) and 
             self.monsters and 
-            self.current_turn_index - len(self.characters) < len(self.monsters) and
-            self.monsters[self.current_turn_index - len(self.characters)]["hp"] <= 0)
+            self.current_turn_index - len(self.team_characters) < len(self.monsters) and
+            self.monsters[self.current_turn_index - len(self.team_characters)].HP <= 0)
         ):
             self.current_turn_index = (self.current_turn_index + 1) % len(self.turn_order)
 
@@ -234,23 +166,23 @@ class CombatState(BaseState):
             self.current_turn_index = (self.current_turn_index + 1) % len(self.turn_order)
 
             # Update selected_character for player's turn
-            if self.current_turn_index < len(self.characters):  # If it's a player's turn
+            if self.current_turn_index < len(self.team_characters):  # If it's a player's turn
                 self.selected_character = self.current_turn_index
-                print(f"Pointer updated to character: {self.characters[self.selected_character]['name']}")
+                print(f"Pointer updated to character: {self.team_characters[self.selected_character].Name}")
             else:
                 self.selected_character = None  # No character selected during monsters' turn
         else:
             self.current_turn_index = 0
 
         # Check if all enemies have acted
-        if not self.player_turn and (not self.monsters or self.current_turn_index < len(self.characters)):
+        if not self.player_turn and (not self.monsters or self.current_turn_index < len(self.team_characters)):
             self.player_turn = True  # Switch back to player's turn
             self.current_turn_index = 0  # Restart player turns
 
         # If all players have acted, switch to enemies' turn
-        if self.player_turn and self.current_turn_index >= len(self.characters):
+        if self.player_turn and self.current_turn_index >= len(self.team_characters):
             self.player_turn = False
-            self.current_turn_index = len(self.characters)  # Start enemy turns
+            self.current_turn_index = len(self.team_characters)  # Start enemy turns
 
         self.waiting_for_player_action = self.player_turn  # Only wait for action during player's turn
 
@@ -266,7 +198,7 @@ class CombatState(BaseState):
             else:
                 g_state_manager.Change('shop', {
                     'level': self.current_stage,
-                    'team': self.characters,
+                    'team': self.team_characters,
                     'stages': self.stages,
                     'coins': self.coins,
                     'item-list': self.bought_items,
@@ -274,7 +206,7 @@ class CombatState(BaseState):
                     'spell-list': self.bought_spells,
                     'armor-list': self.bought_armors
                 })
-        elif not self.characters:  # If no characters remain, transition to game over
+        elif not self.team_characters:  # If no characters remain, transition to game over
             print("All characters defeated! Game over.")
             g_state_manager.Change('defeat', None)
 
@@ -304,25 +236,29 @@ class CombatState(BaseState):
 
     def display_characters_and_monsters(self, screen, selected_character, selected_monster):
         # Display characters
-        for i, character in enumerate(self.characters):
+        for i, character in enumerate(self.team_characters):
             pos = self.character_positions[i]
-            if character['img']:
-                screen.blit(character['img'], pos)
-            else:
-                pygame.draw.circle(screen, self.BLACK, pos, 30)  # Placeholder for character image
-            self.draw_health_bar(screen, pos[0] - 40, pos[1] - 50, character['hp'])
-            self.draw_mana_bar(screen, pos[0] - 40, pos[1] - 35, character['mp'])
+            # if character['img']:
+            #     screen.blit(character['img'], pos)
+            # else:
+            #     pygame.draw.circle(screen, self.BLACK, pos, 30)  # Placeholder for character image
+            character.position = pos
+            character.render(screen)
+            self.draw_health_bar(screen, pos[0] - 40, pos[1] - 50, character.HP)
+            self.draw_mana_bar(screen, pos[0] - 40, pos[1] - 35, character.MP)
             if i == selected_character:
                 pygame.draw.polygon(screen, self.GREEN, [(pos[0], pos[1] - 50), (pos[0] - 10, pos[1] - 60), (pos[0] + 10, pos[1] - 60)])
 
         # Display monsters
         for i, monster in enumerate(self.monsters):
             pos = self.monster_positions[i]
-            if monster['img']:
-                screen.blit(monster['img'], pos)
+            if monster.img:
+                screen.blit(monster.img, pos)
             else:
                 pygame.draw.circle(screen, self.BLACK, pos, 30)  # Placeholder for monster image
-            self.draw_health_bar(screen, pos[0] - 40, pos[1] - 50, monster['hp'])
+            # monster.position = pos
+            # monster.render(screen)
+            self.draw_health_bar(screen, pos[0] - 40, pos[1] - 50, monster.HP)
             if i == selected_monster:
                 pygame.draw.polygon(screen, self.GREEN, [(pos[0], pos[1] - 50), (pos[0] - 10, pos[1] - 60), (pos[0] + 10, pos[1] - 60)])
 
@@ -331,8 +267,8 @@ class CombatState(BaseState):
             return
     
         pygame.draw.rect(screen, self.PANEL_COLOR, (35, HEIGHT/2 + 50, 600, 300)) 
-        current_character = self.characters[selected_character]
-        char_text = gFonts['M_small'].render(f"{current_character['name']} HP: {current_character['hp']} MP: {current_character['mp']}", True, self.WHITE)
+        current_character = self.team_characters[selected_character]
+        char_text = gFonts['M_small'].render(f"{current_character.Name} HP: {current_character.HP} MP: {current_character.MP}", True, self.WHITE)
         screen.blit(char_text, (90, 430))
 
         # Action buttons
@@ -350,26 +286,26 @@ class CombatState(BaseState):
 
     def display_right_panel(self, screen, bought_items):
         if self.right_panel_show == 1:  # Weapon panel
-            if 0 <= self.current_turn_index < len(self.characters):  # Validate index
+            if 0 <= self.current_turn_index < len(self.team_characters):  # Validate index
                 pygame.draw.rect(screen, self.PANEL_COLOR, (645, HEIGHT / 2 + 50, 600, 300))
                 char_text = gFonts['M_small'].render("WEAPONS", True, self.WHITE)
                 screen.blit(char_text, (700, 430))
 
                 # Show weapons for the current character
-                current_character = self.characters[self.current_turn_index]
-                for i, weapon in enumerate(current_character.get("weapons", [])):
+                current_character = self.team_characters[self.current_turn_index]
+                for i, weapon in enumerate(current_character.Weapons):
                     color = self.GREEN if i == self.selected_weapon else self.WHITE
                     weapon_text = gFonts['M_small'].render(f"{weapon['name']} ACC: {weapon['ACC']} D: d{weapon['damage_dice']}", True, color)
                     screen.blit(weapon_text, (700, 470 + (i * 40)))
 
         elif self.right_panel_show == 2:  # Spell panel
-            if self.player_turn and 0 <= self.current_turn_index < len(self.characters):
+            if self.player_turn and 0 <= self.current_turn_index < len(self.team_characters):
                 pygame.draw.rect(screen, self.PANEL_COLOR, (645, HEIGHT / 2 + 50, 600, 300))
                 char_text = gFonts['M_small'].render("SPELLS", True, self.WHITE)
                 screen.blit(char_text, (700, 430))
 
-                current_character = self.characters[self.current_turn_index]
-                for i, spell in enumerate(current_character.get("spells", [])):
+                current_character = self.team_characters[self.current_turn_index]
+                for i, spell in enumerate(current_character.Spells):
                     # Highlight selected spell
                     color = self.GREEN if i == self.selected_spell else self.WHITE
                     spell_text = gFonts['M_small'].render(f"{spell['name']} ACC: {spell['ACC']} D: d{spell['damage_dice']} MP: {spell['mana_cost']}", True, color)
@@ -412,14 +348,14 @@ class CombatState(BaseState):
         self.selected_monster = 0
 
         self.player_turn = True
-        self.turn_order = self.characters + self.monsters
+        self.turn_order = self.team_characters + self.monsters
         self.current_turn_index = 0
         self.waiting_for_player_action = True
 
         for i in params:
             if i == "level":
                 self.current_stage = params[i]
-                self.load_monsters_for_stage(self.current_stage)
+                # self.load_monsters_for_stage(self.current_stage)
             elif i == "team":
                 self.team_characters = params[i]
             elif i == "stages":
@@ -478,21 +414,21 @@ class CombatState(BaseState):
                     self.right_panel_show = 4
 
                 if self.right_panel_show == 1:
-                    current_character = self.characters[self.selected_character]
-                    for i, weapon in enumerate(current_character.get("weapons", [])):
+                    current_character = self.team_characters[self.selected_character]
+                    for i, weapon in enumerate(current_character.Weapons):
                         # Check if the click is within this weapon's row
                         weapon_rect = pygame.Rect(700, 470 + (i * 40), 400, 30)  # Adjust as needed
                         if weapon_rect.collidepoint(event.pos):
                             self.selected_weapon = i
-                            print(f"Selected weapon: {current_character['weapons'][i]['name']}")
+                            print(f"Selected weapon: {current_character.Weapons[i]['name']}")
 
                 if self.right_panel_show == 2:  # Spell panel is open
-                    current_character = self.characters[self.current_turn_index]
+                    current_character = self.team_characters[self.current_turn_index]
                     for i, spell in enumerate(self.spell_positions):
                         spell_rect = pygame.Rect(700, 470 + (i * 40), 400, 30)
                         if spell_rect.collidepoint(event.pos):
                             self.selected_spell = i
-                            print(f"Selected spell: {current_character['spells'][i]['name']}")
+                            print(f"Selected spell: {current_character.Spells[i]['name']}")
 
                  # Handle the "I will come back" and "Just kidding" buttons
                 comeback_button, just_kidding_button = self.display_right_panel(
@@ -506,6 +442,9 @@ class CombatState(BaseState):
                     self.right_panel_show = 0  # Go back to item display
         
         self.handle_turn()
+
+        for character in self.team_characters:
+            character.update(dt)
 
     def render(self, screen):
         screen.blit(self.bg_image, (0, 0))  # Draw background image
