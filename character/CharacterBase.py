@@ -32,6 +32,9 @@ class Character():
     def addWeapon(self, weapon):
         self.Weapons.append(weapon)
     
+    def addSpell(self, spell):
+        self.Spells.append(spell)
+    
     def update(self, dt):
         """Update the character's animation."""
         self.current_animation.update(dt)

@@ -17,23 +17,20 @@ class Sorcerer(Character):
             {
                 "name": "Magic Missile",
                 "ACC": 4,
+                "INT": 0,
                 "damage_dice": 6,
+                "dice": 1,
                 "mana_cost": 5,
                 "effect": "force_damage"
             },
             {
-                "name": "Charm",
-                "ACC": 3,
-                "damage_dice": 0,
-                "mana_cost": 6,
-                "effect": "charm"
-            },
-            {
                 "name": "Shield",
                 "ACC": 0,
-                "damage_dice": 0,
+                "INT": 0,
+                "damage_dice": 6,
+                "dice": 1,
                 "mana_cost": 7,
-                "effect": "defense_boost"
+                "effect": None
             }
         ]
 

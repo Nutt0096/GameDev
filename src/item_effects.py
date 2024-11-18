@@ -83,7 +83,7 @@ def apply_item_effect(item, target, team=None, enemies=None, coins=0):
     # Midas Bomb
     elif effect == "Deals 3d6 damage to an enemy. If it died, gain 2d4*10 coins":
         damage = roll_dice(6) + roll_dice(6) + roll_dice(6)
-        target.HP = target["hp"] - damage
+        target.HP = target.HP - damage
         if target.HP <= 0:
             coins += (roll_dice(4) + roll_dice(4)) * 10
             return f"{target.Name} died! You gain {coins} coins!"

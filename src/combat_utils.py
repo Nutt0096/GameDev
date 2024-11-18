@@ -28,17 +28,21 @@ def resolve_spell(caster, target, spell, monsters, selected_monster_index):
     # Deduct mana
     caster.MP -= spell["mana_cost"]
 
-    if spell.get("effect") == "heal":
+    if spell.get("effect") == "heal" or  spell.get("effect") == "shield":
         # Healing logic
         heal_amount = roll_dice(spell["damage_dice"]) + caster.INT
         caster.HP = min(100, caster.HP + heal_amount)
-        return f"{caster.Name} casts {spell.Name} and heals {heal_amount} HP!"
+        return f"{caster.Name} casts {spell['name']} and heals {heal_amount} HP!"
+    
     else:
         hit_accuracy = roll_dice(20) + caster.ACC + spell["ACC"]
 
         if hit_accuracy > target.CHA:
-            damage = roll_dice(spell["damage_dice"]) + caster.INT
-            target.HP -= damage
+            sum_damage = 0
+            for i in range(spell["dice"]):
+                damage = roll_dice(spell["damage_dice"]) + caster.INT+ spell["INT"]
+                sum_damage += damage
+            target.HP -= sum_damage
             return f"Hit! {caster.Name} deals {damage} damage to {target.Name}."
         else:
             return f"Miss! {caster.Name}'s total accuracy ({hit_accuracy}) < {target.DEF}."
