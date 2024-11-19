@@ -6,6 +6,7 @@ def roll_dice(sides: int) -> int:
 
 def resolve_attack(attacker, target, weapon):
     """Calculate if the attack hits and apply damage."""
+    view_dialog = []
     hit_accuracy = roll_dice(20) + attacker.ACC + weapon["ACC"]
     
     if hit_accuracy >= target.DEF:
@@ -18,7 +19,7 @@ def resolve_attack(attacker, target, weapon):
         target.HP -= sum_damage
         return f"Hit! {attacker.Name} deals {damage} damage to {target.Name}."
     else:
-        return f"Miss! {attacker.Name}'s total accuracy ({hit_accuracy}) < {target.DEF}."
+        return f"Miss! {attacker.Name}'s total accuracy {hit_accuracy} < {target.Name} DEF."
     
 def resolve_spell(caster, target, spell, monsters, selected_monster_index):
     """Resolve a spell action. Handles both healing and damaging spells, as well as spell resistance."""
@@ -45,13 +46,13 @@ def resolve_spell(caster, target, spell, monsters, selected_monster_index):
             target.HP -= sum_damage
             return f"Hit! {caster.Name} deals {damage} damage to {target.Name}."
         else:
-            return f"Miss! {caster.Name}'s total accuracy ({hit_accuracy}) < {target.DEF}."
+            return f"Miss! {caster.Name}'s total accuracy {hit_accuracy} < {target.Name} DEF."
 
 def resolve_attack_monster(monster, target):
     hit_accuracy = roll_dice(20) + monster.ACC
-    if hit_accuracy >= target.DEF:
+    if hit_accuracy >= target.cal_DEF:
         damage = roll_dice(10) + monster.STR
         target.HP -= damage
         return f"{monster.Name} attacks {target.Name} and deals {damage} damage!"
     else:
-        return f"Miss! {monster.Name}'s total accuracy ({hit_accuracy}) < {target.DEF}."
+        return f"Miss! {monster.Name}'s total accuracy {hit_accuracy} < {target.Name} DEF."
