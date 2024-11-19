@@ -405,6 +405,11 @@ class ShopState(BaseState):
             elif i == "coins":
                 self.money = params[i]
 
+        self.bought_items = []
+        self.bought_weapons = []
+        self.bought_spells = []
+        self.bought_armors = []
+
     def Exit(self):
         pass
 

@@ -15,8 +15,21 @@ class Character():
         self.HP = self.CON*10
         self.MP = self.INT*10
 
+        self.cal_CON = self.CON
+        self.cal_DEF = self.DEF
+        self.cal_CHA = self.CHA
+
         self.Weapons = []
         self.Spells = []
+        self.armors = [
+            {
+                "name": "no armor",
+                "rarity": "no",
+                "CON": 0,
+                "DEF": 0,
+                "CHA": 0
+            }
+        ]
 
         self.sprite_manager = SpriteManager()
         self.idle_animation = None
@@ -32,6 +45,22 @@ class Character():
     def addWeapon(self, weapon):
         self.Weapons.append(weapon)
     
+    def addSpell(self, spell):
+        self.Spells.append(spell)
+
+    def addArmor(self, armor): 
+        self.armors.append(armor)
+
+    def checkarmors(self,armors):
+        armor = armors[0]
+        if armor["name"] == "no armor":
+            pass
+        else:
+            self.cal_CON = self.CON + armor["CON"] 
+            self.cal_DEF = self.DEF + armor["DEF"]
+            self.cal_CHA = self.CHA + armor["CHA"]
+            self.HP += armor["CON"]*10
+
     def update(self, dt):
         """Update the character's animation."""
         self.current_animation.update(dt)

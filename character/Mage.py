@@ -16,24 +16,31 @@ class Mage(Character):
             {
                 "name": "Fireball",
                 "ACC": 2,
+                "INT": 0,
                 "damage_dice": 10,
+                "dice": 1,
                 "mana_cost": 10,
                 "effect": None
             },
             {
                 "name": "Lightning Bolt",
                 "ACC": 5,
+                "INT": 0,
                 "damage_dice": 6,
+                "dice": 1,
                 "mana_cost": 8,
                 "effect": None
             },
             {
                 "name": "Healing",
                 "ACC": 0,
+                "INT": 0,
                 "damage_dice": 10,
+                "dice": 1,
                 "mana_cost": 15,
                 "effect": "heal"
-            }
+            },
+            
         ]
 
         self.load_animations(self.Name)

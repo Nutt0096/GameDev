@@ -136,6 +136,10 @@ class SelectCharacterState(BaseState):
                                 'level': self.s_current_stage,
                                 'team': self.s_team_character,
                                 'stages': [False, False, False, False, False],
+                                'item-list':[],
+                                'weapon-list': [],
+                                'spell-list': [],
+                                'armor-list': [],
                                 'coins': self.coins
                             })
 

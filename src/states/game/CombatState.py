@@ -60,7 +60,14 @@ class CombatState(BaseState):
         self.current_turn_index = 0
         self.waiting_for_player_action = True
 
-        self.weapon_update(self.team_characters,self.bought_weapons)
+        # show dialogue
+        self.show_text_char = True  # Flag to track whether the text is visible or not
+        self.show_text_mon = False
+        self.text_display_time = 1000  # 1000 milliseconds = 1 second
+        self.start_time = pygame.time.get_ticks()  # Get the current time in milliseconds
+        self.start_time_mon = 0
+        self.show_dialogue_char = ""
+
 
     def handle_turn(self):
         """Handle the current entity's turn."""
@@ -92,7 +99,9 @@ class CombatState(BaseState):
                     if self.monsters:  # Check if there are still monsters to target
                         target = self.monsters[self.selected_monster]
                         result = resolve_attack(current_entity, target, weapon)
+                        self.show_dialogue_char = result
                         print(result)
+                        
 
                         if target.HP <= 0:
                             print(f"{target.Name} is defeated!")
@@ -112,6 +121,7 @@ class CombatState(BaseState):
                     if self.monsters:  # Check if there are still monsters to target
                         target = self.monsters[self.selected_monster]
                         result = resolve_spell(current_entity, target, spell, self.monsters, self.selected_monster)
+                        self.show_dialogue_char = result
                         print(result)
 
                         if target.HP <= 0:  # Adjust selection after a monster is defeated
@@ -161,6 +171,8 @@ class CombatState(BaseState):
             if current_entity in self.monsters:
                 target = random.choice(self.team_characters)
                 result = resolve_attack_monster(current_entity, target)
+                self.show_text_mon = True
+                self.start_time_mon = pygame.time.get_ticks()
                 print(result)
 
                 # Remove defeated character if necessary
@@ -382,7 +394,6 @@ class CombatState(BaseState):
     def weapon_update(self,team_characters,bought_weapons):
         for character in team_characters:
             for weapon in bought_weapons:
-                print(weapon['user'], character.Name)
                 if weapon['user'] == character.Name:
                     dice_str = weapon["dice"]
                     dice_parts = dice_str.split("d")
@@ -390,14 +401,7 @@ class CombatState(BaseState):
                     num_dice = int(dice_parts[0])
                     damage_dice = int(dice_parts[1])
 
-                    print({
-                            "name": weapon["name"],
-                            "ACC": weapon["modify stats"]["ACC"],
-                            "STR": weapon["modify stats"]["STR"],
-                            "damage_dice": damage_dice,
-                            "dice":num_dice,
-                        })
-                    character.Weapons.append(
+                    character.addWeapon(
                         {
                             "name": weapon["name"],
                             "ACC": weapon["modify stats"]["ACC"],
@@ -405,7 +409,64 @@ class CombatState(BaseState):
                             "damage_dice": damage_dice,
                             "dice":num_dice,
                         })
-                    
+    
+    def spell_update(self,team_characters,bought_spells):
+        for character in team_characters:
+            for spell in bought_spells:
+                if spell['user'] == character.Name:
+                    dice_str = spell["dice"]
+                    dice_parts = dice_str.split("d")
+
+                    num_dice = int(dice_parts[0])
+                    damage_dice = int(dice_parts[1])
+
+                    character.addSpell(
+                        {
+                            "name": spell["name"],
+                            "ACC": spell["modify stats"]["ACC"],
+                            "INT": spell["modify stats"]["INT"],
+                            "damage_dice": damage_dice,
+                            "dice":num_dice,
+                            "mana_cost": spell["mana"],
+                            "effect": None
+                        }
+                        )
+    
+    def armor_update(self,team_characters,bought_armors):
+        for character in team_characters:
+            for armor in bought_armors:
+                if armor['user'] == character.Name:
+                    if not character.armors:
+                        character.addArmor(
+                            {
+                            "name": armor["name"],
+                            "rarity": armor["rarity"],
+                            "CON": armor["modify stats"]["CON"],
+                            "DEF": armor["modify stats"]["DEF"],
+                            "CHA": armor["modify stats"]["CHA"]
+                        }
+                        )
+                    else:
+                        armor_rarity = {"no": 0,"common": 1,"rare": 2,"legendary": 3}
+                        new_armor_rare = armor_rarity[armor["rarity"]]
+                        old_armor_rare = armor_rarity[character.armors[0]["rarity"]]
+
+                        if old_armor_rare < new_armor_rare:
+                            character.armors.pop(0)
+
+                            character.addArmor(
+                                {
+                                    "name": armor["name"],
+                                    "rarity": armor["rarity"],
+                                    "CON": armor["modify stats"]["CON"],
+                                    "DEF": armor["modify stats"]["DEF"],
+                                    "CHA": armor["modify stats"]["CHA"]
+                                }
+                            )
+                        else: # old_armor_rare > new_armor_rare or old_armor_rare == new_armor_rare
+                            pass
+
+
 
     def Enter(self, params):
         self.selected_weapon = None 
@@ -429,20 +490,36 @@ class CombatState(BaseState):
                 self.bought_items = params[i]
             elif i == "weapon-list":
                 self.bought_weapons = params[i]
-                print(self.bought_weapons)
             elif i == "spell-list":
                 self.bought_spells = params[i]
             elif i == "armor-list":
                 self.bought_armors = params[i]
 
         self.weapon_update(self.team_characters,self.bought_weapons)
+        self.spell_update(self.team_characters,self.bought_spells)
+        self.armor_update(self.team_characters,self.bought_armors)
+
+        for character in self.team_characters:
+            character.checkarmors(character.armors)
+        
+        self.bought_weapons = []
+        self.bought_spells = []
+        self.bought_armors = []
 
         self.player_turn = True
         self.turn_order = self.team_characters + self.monsters
         self.current_turn_index = 0
         self.waiting_for_player_action = True
+
+        # time dialogue
+        self.show_text_char = True
+        self.show_text_mon = False
+        self.start_time = pygame.time.get_ticks()
+        self.show_dialogue_char = ""
    
     def update(self, dt, events):
+        current_time = pygame.time.get_ticks()
+        self.dialogue_start_time = pygame.time.get_ticks()
 
         self.animation_time += dt
         if self.animation_time > self.animation_speed:
@@ -459,6 +536,8 @@ class CombatState(BaseState):
                     g_state_manager.Change('stage', None)  # Exit to stage
                 elif event.key == pygame.K_RETURN:
                     self.process_player_action("attack")
+                    self.show_text_char = True  # Make text visible again
+                    self.start_time = pygame.time.get_ticks()
 
                 # Navigate monsters
                 if event.key == pygame.K_UP:
@@ -527,6 +606,14 @@ class CombatState(BaseState):
         
         self.handle_turn()
 
+        if current_time - self.start_time >= self.text_display_time and self.show_text_char:
+            self.show_text_char = False
+        
+        if current_time - self.start_time_mon >= 1000 and self.show_text_mon:
+            self.show_text_mon = False
+        
+        # self.show_time_mon = pygame.time.get_ticks()
+
         for character in self.team_characters:
             character.update(dt)
 
@@ -535,6 +622,14 @@ class CombatState(BaseState):
 
     def render(self, screen):
         screen.blit(self.bg_image, (0, 0))  # Draw background image
+        if self.show_text_char:
+            text = gFonts['M_small'].render(self.show_dialogue_char, True, self.RED)
+            screen.blit(text, (WIDTH//4 + 50 - text.get_width()//2 , 15)) 
+
+        if self.show_text_mon:
+            text = gFonts['M_small'].render("All monsters Attack!", True, self.RED)
+            screen.blit(text, (WIDTH - WIDTH//5 - 30 - text.get_width()//2, 15))
+        
         self.display_characters_and_monsters(screen, self.selected_character, self.selected_monster)
         self.display_action_panel(screen, self.selected_character)  # Update action panel
         self.display_right_panel(screen, self.bought_items)  # Update right panel
